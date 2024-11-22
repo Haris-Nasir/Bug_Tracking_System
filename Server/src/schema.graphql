@@ -1,0 +1,11 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  index: String!
+  securedResource: String!
+  securedDataForAdmin: String!
+  securedDataForNormal_User: String!
+  login(email: String!, password: String!): String!
+}
