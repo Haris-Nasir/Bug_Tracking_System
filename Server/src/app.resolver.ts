@@ -1,32 +1,42 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { AuthGuard } from './auth/auth.guard';
-import { User } from './user/entity/user.entity';
-import * as jwt from 'jsonwebtoken';
 import { JwtGuard } from './auth/jwt.guard';
 import { RoleGuard, Roles } from './auth/role.guard';
-@Resolver((of) => String) //Resolver returning string type
+import * as jwt from 'jsonwebtoken';
+import { AuthGuard } from './auth/auth.guard';
+import { User } from './user/entity/user.entity';
+
+@Resolver()
 export class AppResolver {
-  @Query((returns) => String)
+  @Query(() => String)
   index(): string {
-    return 'Nest Js Graphql Server';
+    return 'NestJS GraphQL Server';
   }
-  @Query((returns) => String)
+
+  @Query(() => String)
   @UseGuards(JwtGuard)
   securedResource(@Context('user') user: any): string {
-    return 'This is secured data' + JSON.stringify(user);
+    return `This is secured data for ${user.role}: ${JSON.stringify(user)}`;
   }
-  @Query((returns) => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.ADMIN))
-  securedDataForAdmin(@Context('user') user: any): string {
-    return 'This is secured data for Admin' + JSON.stringify(user);
+
+  @Query(() => String)
+  @UseGuards(JwtGuard, new RoleGuard(Roles.MANAGER))
+  securedDataForManager(@Context('user') user: any): string {
+    return `This is secured data for Manager: ${JSON.stringify(user)}`;
   }
-  @Query((returns) => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.NORMAL_USER))
-  securedDataForNormal_User(@Context('user') user: any): string {
-    return 'This is secured data for Normal_User' + JSON.stringify(user);
+
+  @Query(() => String)
+  @UseGuards(JwtGuard, new RoleGuard(Roles.DEVELOPER))
+  securedDataForDeveloper(@Context('user') user: any): string {
+    return `This is secured data for Developer: ${JSON.stringify(user)}`;
   }
-  //I have created a query which will return a string and this query will fetch two arguments email and password
+
+  @Query(() => String)
+  @UseGuards(JwtGuard, new RoleGuard(Roles.QA))
+  securedDataForQA(@Context('user') user: any): string {
+    return `This is secured data for QA: ${JSON.stringify(user)}`;
+  }
+
   @Query((returns) => String)
   @UseGuards(AuthGuard)
   login(
@@ -36,11 +46,9 @@ export class AppResolver {
   ): string {
     let payload = {
       id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
       email: user.email,
       role: user.role,
     };
-    return jwt.sign(payload, 'key', { expiresIn: '60s' });
+    return jwt.sign(payload, 'key', { expiresIn: '30m' });
   }
 }

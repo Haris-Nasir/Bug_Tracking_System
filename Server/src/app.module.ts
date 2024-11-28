@@ -7,6 +7,8 @@ import { DataSource } from 'typeorm';
 import { AppResolver } from './app.resolver';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { BugResolver } from './bug/bug.resolver';
+import { ProjectResolver } from './project/project.resolver';
 
 @Module({
   imports: [
