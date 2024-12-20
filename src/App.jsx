@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ApolloProvider from "./ApolloProvider";
 import Signup from "./components/Auth/Signup";
-import Developer from "./components/Dashboard/developer";
-import Manager from "./components/Dashboard/manager";
 import Login from "./components/auth/Login";
+import Projectlist from "./components/Dashboard/projectlist";
+import Buglist from "./components/Dashboard/buglist";
 
 function App() {
   return (
@@ -13,8 +13,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/developer" element={<Developer />} />
-          <Route path="/manager" element={<Manager />} />
+          <Route path="/projectlist" element={<Projectlist />} />
+          <Route path="/buglist" element={<Buglist />} />
         </Routes>
       </Router>
     </ApolloProvider>

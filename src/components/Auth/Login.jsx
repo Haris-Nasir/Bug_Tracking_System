@@ -58,10 +58,13 @@ const Login = () => {
       const roleResult = await roleResponse.json();
 
       if (roleResponse.ok && roleResult?.data?.securedResource) {
-        const userData = roleResult.data.securedResource;
-        debugger;
+        const userData = JSON.parse(roleResult.data.securedResource);
         localStorage.setItem("user", userData);
-        navigate("/developer");
+        if (userData.role == "developer" || userData.role == "manager") {
+          navigate("/projectlist");
+        } else {
+          navigate("/buglist");
+        }
       } else {
         console.log("Failed to fetch user role. Authentication failed.");
       }
